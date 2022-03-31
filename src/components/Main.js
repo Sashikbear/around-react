@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import api from "../utils/api";
-function Main(props) {
+import Card from "./Card";
+function Main({
+  onEditProfileClick,
+  onEditAvatarClick,
+  onAddPlaceClick,
+  onCardClick,
+  onConfirmDeleteClick,
+}) {
   const [userName, setUserName] = useState("");
   const [userDescription, setUserDescription] = useState("");
   const [userAvatar, setUserAvatar] = useState("");
@@ -12,9 +19,6 @@ function Main(props) {
       setUserDescription(userData.about);
       setUserAvatar(userData.avatar);
     });
-  }, []);
-
-  useEffect(() => {
     api.getInitialCards().then((cardsData) => {
       console.log(cardsData);
       setCards(cardsData);
@@ -32,7 +36,7 @@ function Main(props) {
             ></div>
             <div
               className='profile__image-overlay'
-              onClick={props.onEditAvatarClick}
+              onClick={onEditAvatarClick}
             ></div>
           </div>
 
@@ -44,7 +48,7 @@ function Main(props) {
                 className='button button_type_edit'
                 type='button'
                 aria-label='edit'
-                onClick={props.onEditProfileClick}
+                onClick={onEditProfileClick}
               ></button>
             </div>
             <p className='profile__user-job'>{userDescription}</p>
@@ -55,37 +59,19 @@ function Main(props) {
           className='button button_type_add'
           type='button'
           aria-label='add'
-          onClick={props.onAddPlaceClick}
+          onClick={onAddPlaceClick}
         ></button>
       </section>
-
-      {props.children}
 
       <section className='cards'>
         <ul className='cards__card-grid'>
           {cards.map((card) => (
-            <li className='card' key={card._id}>
-              <div
-                className='card__image'
-                style={{ backgroundImage: `url(${card.link})` }}
-              />
-              <button
-                className='button button_type_delete'
-                type='button'
-                aria-label='delete'
-              ></button>
-              <div className='card__info'>
-                <h2 className='card__title'></h2>
-                <div className='card__likes'>
-                  <button
-                    className='button button_type_like'
-                    type='button'
-                    aria-label='like'
-                  ></button>
-                  <span className='card__like-counter'></span>
-                </div>
-              </div>
-            </li>
+            <Card
+              key={card._id}
+              card={card}
+              onCardClick={onCardClick}
+              onConfirmDeleteClick={onConfirmDeleteClick}
+            />
           ))}
         </ul>
       </section>
