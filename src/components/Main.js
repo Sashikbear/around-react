@@ -14,13 +14,11 @@ function Main({
   const [cards, setCards] = useState([]);
   useEffect(() => {
     api.getUserInfo().then((userData) => {
-      console.log(userData);
       setUserName(userData.name);
       setUserDescription(userData.about);
       setUserAvatar(userData.avatar);
     });
     api.getInitialCards().then((cardsData) => {
-      console.log(cardsData);
       setCards(cardsData);
     });
   }, []);

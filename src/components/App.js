@@ -28,7 +28,7 @@ function App() {
   function handleCardClick(card) {
     setSelectedCard(card);
   }
-  console.log("selectedCard" + selectedCard);
+
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
