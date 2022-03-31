@@ -126,27 +126,6 @@ function App() {
         </Main>
         <Footer />
       </div>
-      <template id='card'>
-        <li className='card'>
-          <img className='card__image' src='#' alt='#' />
-          <button
-            className='button button_type_delete'
-            type='button'
-            aria-label='delete'
-          ></button>
-          <div className='card__info'>
-            <h2 className='card__title'></h2>
-            <div className='card__likes'>
-              <button
-                className='button button_type_like'
-                type='button'
-                aria-label='like'
-              ></button>
-              <span className='card__like-counter'></span>
-            </div>
-          </div>
-        </li>
-      </template>
     </div>
   );
 }
