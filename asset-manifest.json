@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/around-react/static/css/main.6613817c.css",
+    "main.js": "/around-react/static/js/main.bebe9eb1.js",
+    "static/js/787.1c78f32b.chunk.js": "/around-react/static/js/787.1c78f32b.chunk.js",
+    "static/media/Inter-Medium.woff?v=3.19": "/around-react/static/media/Inter-Medium.9053572c46aeb4b16caa.woff",
+    "static/media/Inter-Black.woff?v=3.19": "/around-react/static/media/Inter-Black.c6938660eec019fefd68.woff",
+    "static/media/Inter-Regular.woff?v=3.19": "/around-react/static/media/Inter-Regular.8c206db99195777c6769.woff",
+    "static/media/Inter-Medium.woff2?v=3.19": "/around-react/static/media/Inter-Medium.293fd13dbca5a3e450ef.woff2",
+    "static/media/Inter-Black.woff2?v=3.19": "/around-react/static/media/Inter-Black.15ca31c0a2a68f76d2d1.woff2",
+    "static/media/Inter-Regular.woff2?v=3.19": "/around-react/static/media/Inter-Regular.c8ba52b05a9ef10f4758.woff2",
+    "static/media/header-logo.svg": "/around-react/static/media/header-logo.4e8e0a1d604782a0dff8e5b1a5441e4d.svg",
+    "index.html": "/around-react/index.html",
+    "static/media/trashbin.svg": "/around-react/static/media/trashbin.8cb59aa98088a1653f62.svg",
+    "static/media/button-like.svg": "/around-react/static/media/button-like.d1d9bf725542997f16a9.svg",
+    "static/media/button-like-active.svg": "/around-react/static/media/button-like-active.226461bd64622361ffb2.svg",
+    "static/media/button-close.svg": "/around-react/static/media/button-close.81d0f6a6ee1da3d7d7d2.svg",
+    "static/media/button-edit.svg": "/around-react/static/media/button-edit.8667ac4a523e8fc42e59.svg",
+    "static/media/button-add.svg": "/around-react/static/media/button-add.d86bb2edc2f6eadb96b7.svg",
+    "main.6613817c.css.map": "/around-react/static/css/main.6613817c.css.map",
+    "main.bebe9eb1.js.map": "/around-react/static/js/main.bebe9eb1.js.map",
+    "787.1c78f32b.chunk.js.map": "/around-react/static/js/787.1c78f32b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6613817c.css",
+    "static/js/main.bebe9eb1.js"
+  ]
+}
