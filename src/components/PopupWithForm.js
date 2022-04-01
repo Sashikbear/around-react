@@ -21,8 +21,6 @@ function PopupWithForm({
           name={`form-${name}`}
           className={`popup__form popup__form_type_${name}`}
           action='#'
-          method='get'
-          noValidate
         >
           <h2 className='popup__form-title'>{title}</h2>
           {children}

@@ -13,14 +13,24 @@ function Main({
   const [userAvatar, setUserAvatar] = useState("");
   const [cards, setCards] = useState([]);
   useEffect(() => {
-    api.getUserInfo().then((userData) => {
-      setUserName(userData.name);
-      setUserDescription(userData.about);
-      setUserAvatar(userData.avatar);
-    });
-    api.getInitialCards().then((cardsData) => {
-      setCards(cardsData);
-    });
+    api
+      .getUserInfo()
+      .then((userData) => {
+        setUserName(userData.name);
+        setUserDescription(userData.about);
+        setUserAvatar(userData.avatar);
+      })
+      .catch((err) => {
+        console.log(`Error: ${err}`);
+      });
+    api
+      .getInitialCards()
+      .then((cardsData) => {
+        setCards(cardsData);
+      })
+      .catch((err) => {
+        console.log(`Error: ${err}`);
+      });
   }, []);
 
   return (
