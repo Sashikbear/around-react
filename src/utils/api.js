@@ -1,7 +1,10 @@
-class Api {
-  constructor({ baseUrl, headers }) {
-    this._baseUrl = baseUrl;
-    this._headers = headers;
+import React from "react";
+
+class Api extends React.Component {
+  constructor(props) {
+    super(props);
+    this._baseUrl = props.baseUrl;
+    this._headers = props.headers;
   }
   _customFetch = (url, headers) => {
     return fetch(url, headers).then((res) =>
