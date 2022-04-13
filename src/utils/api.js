@@ -53,16 +53,10 @@ class Api extends Component {
       }),
     });
   }
-  likeCard(cardId) {
+  changeLikeCardStatus(cardId, isLiked) {
     return this._customFetch(`${this._baseUrl}/cards/likes/${cardId}`, {
       headers: this._headers,
-      method: "PUT",
-    });
-  }
-  unlikeCard(cardId) {
-    return this._customFetch(`${this._baseUrl}/cards/likes/${cardId}`, {
-      headers: this._headers,
-      method: "DELETE",
+      method: `${isLiked ? "DELETE" : "PUT"}`,
     });
   }
 }
