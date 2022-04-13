@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import api from "../utils/api";
 import Card from "./Card";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 function Main({
   onEditProfileClick,
   onEditAvatarClick,
@@ -8,21 +9,11 @@ function Main({
   onCardClick,
   onConfirmDeleteClick,
 }) {
-  const [userName, setUserName] = useState("");
-  const [userDescription, setUserDescription] = useState("");
-  const [userAvatar, setUserAvatar] = useState("");
   const [cards, setCards] = useState([]);
+
+  const currentUser = useContext(CurrentUserContext);
+
   useEffect(() => {
-    api
-      .getUserInfo()
-      .then((userData) => {
-        setUserName(userData.name);
-        setUserDescription(userData.about);
-        setUserAvatar(userData.avatar);
-      })
-      .catch((err) => {
-        console.log(`Error: ${err}`);
-      });
     api
       .getInitialCards()
       .then((cardsData) => {
@@ -40,7 +31,7 @@ function Main({
           <div className='profile__image-area'>
             <div
               className='profile__image'
-              style={{ backgroundImage: `url(${userAvatar})` }}
+              style={{ backgroundImage: `url(${currentUser.avatar})` }}
             ></div>
             <div
               className='profile__image-overlay'
@@ -50,7 +41,7 @@ function Main({
 
           <div className='profile__info'>
             <div className='profile__user'>
-              <h1 className='profile__user-name'>{userName}</h1>
+              <h1 className='profile__user-name'>{currentUser.name}</h1>
 
               <button
                 className='button button_type_edit'
@@ -59,7 +50,7 @@ function Main({
                 onClick={onEditProfileClick}
               ></button>
             </div>
-            <p className='profile__user-job'>{userDescription}</p>
+            <p className='profile__user-job'>{currentUser.about}</p>
           </div>
         </div>
 

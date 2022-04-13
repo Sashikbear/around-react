@@ -1,6 +1,6 @@
-import React from "react";
+import { Component } from "react";
 
-class Api extends React.Component {
+class Api extends Component {
   constructor(props) {
     super(props);
     this._baseUrl = props.baseUrl;
