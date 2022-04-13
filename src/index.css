@@ -37,6 +37,7 @@
 @import url(../src/blocks/button/_type/button_type_delete.css);
 @import url(../src/blocks/button/_active/button_active.css);
 @import url(../src/blocks/button/_location/button_location_zoom-card.css);
+@import url(../src/blocks/button/_hidden/button_hidden.css);
 @import url(../src/blocks/cards/cards.css);
 @import url(../src/blocks/cards/__card-grid/cards__card-grid.css);
 @import url(../src/blocks/card/card.css);
