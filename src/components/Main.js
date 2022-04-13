@@ -13,10 +13,7 @@ function Main({
 
   const currentUser = useContext(CurrentUserContext);
   function handleCardLike(card) {
-    // Check if this card was already liked
     const isLiked = card.likes.some((user) => user._id === currentUser._id);
-
-    // Send a request to the API and getting the updated card data
     api
       .changeLikeCardStatus(card._id, isLiked)
       .then((newCard) => {

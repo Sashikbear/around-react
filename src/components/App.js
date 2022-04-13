@@ -6,6 +6,7 @@ import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import api from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import EditProfilePopup from "./EditProfilePopup";
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -52,6 +53,17 @@ function App() {
     setIsConfirmDeletePopupOpen(false);
     setSelectedCard(undefined);
   }
+  function handleUpdateUser(currentUser) {
+    api
+      .editProfile({ name: currentUser.name, about: currentUser.about })
+      .then((userData) => {
+        setCurrentUser(userData);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(`Error: ${err}`);
+      });
+  }
   return (
     <div className='page'>
       <div className='wrapper'>
@@ -64,7 +76,12 @@ function App() {
             onConfirmDeleteClick={handleConfirmDeleteClick}
             onCardClick={handleCardClick}
           />
-          <PopupWithForm
+          <EditProfilePopup
+            isOpen={isEditProfilePopupOpen}
+            onClose={closeAllPopups}
+            onUpdateUser={handleUpdateUser}
+          />
+          {/* <PopupWithForm
             name='profile'
             title='Edit profile'
             submitButton='Save'
@@ -93,7 +110,7 @@ function App() {
               required
             />
             <span className='popup__error job-input-error'></span>
-          </PopupWithForm>
+          </PopupWithForm> */}
           <PopupWithForm
             name='add-card'
             title='New Place'
