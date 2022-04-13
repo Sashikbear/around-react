@@ -13,17 +13,35 @@ function Main({
 
   const currentUser = useContext(CurrentUserContext);
   function handleCardLike(card) {
-    // Check one more time if this card was already liked
+    // Check if this card was already liked
     const isLiked = card.likes.some((user) => user._id === currentUser._id);
 
     // Send a request to the API and getting the updated card data
-    api.changeLikeCardStatus(card._id, isLiked).then((newCard) => {
-      setCards((state) =>
-        state.map((currentCard) =>
-          currentCard._id === card._id ? newCard : currentCard
-        )
-      );
-    });
+    api
+      .changeLikeCardStatus(card._id, isLiked)
+      .then((newCard) => {
+        setCards((state) =>
+          state.map((currentCard) =>
+            currentCard._id === card._id ? newCard : currentCard
+          )
+        );
+      })
+      .catch((err) => {
+        console.log(`Error: ${err}`);
+      });
+  }
+
+  function handleCardDelete(card) {
+    api
+      .deleteCard(card._id)
+      .then(() => {
+        setCards((state) =>
+          state.filter((currentCard) => currentCard._id !== card._id)
+        );
+      })
+      .catch((err) => {
+        console.log(`Error: ${err}`);
+      });
   }
 
   useEffect(() => {
@@ -84,6 +102,7 @@ function Main({
               onCardClick={onCardClick}
               onConfirmDeleteClick={onConfirmDeleteClick}
               onCardLike={handleCardLike}
+              onCardDelete={handleCardDelete}
             />
           ))}
         </ul>
