@@ -7,6 +7,7 @@ import ImagePopup from "./ImagePopup";
 import api from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -64,6 +65,17 @@ function App() {
         console.log(`Error: ${err}`);
       });
   }
+  function handleUpdateAvatar(currentUser) {
+    api
+      .editAvatar({ avatar: currentUser.avatar })
+      .then((userData) => {
+        setCurrentUser(userData);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(`Error: ${err}`);
+      });
+  }
   return (
     <div className='page'>
       <div className='wrapper'>
@@ -80,37 +92,12 @@ function App() {
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}
             onUpdateUser={handleUpdateUser}
-          />
-          {/* <PopupWithForm
-            name='profile'
-            title='Edit profile'
-            submitButton='Save'
-            isOpen={isEditProfilePopupOpen}
+          />{" "}
+          <EditAvatarPopup
+            isOpen={isEditAvatarPopupOpen}
             onClose={closeAllPopups}
-          >
-            <input
-              id='name-input'
-              name='name'
-              className='popup__input popup__input_type_name'
-              type='text'
-              placeholder='Name'
-              minLength='2'
-              maxLength='40'
-              required
-            />
-            <span className='popup__error name-input-error'></span>
-            <input
-              id='job-input'
-              name='about'
-              className='popup__input popup__input_type_job'
-              type='text'
-              placeholder='About me'
-              minLength='2'
-              maxLength='200'
-              required
-            />
-            <span className='popup__error job-input-error'></span>
-          </PopupWithForm> */}
+            onUpdateAvatar={handleUpdateAvatar}
+          />
           <PopupWithForm
             name='add-card'
             title='New Place'
@@ -138,23 +125,6 @@ function App() {
               required
             />
             <span className='popup__error url-input-error'></span>
-          </PopupWithForm>
-          <PopupWithForm
-            name='avatar'
-            title='Change profile picture'
-            submitButton='Save'
-            isOpen={isEditAvatarPopupOpen}
-            onClose={closeAllPopups}
-          >
-            <input
-              id='avatar-input'
-              type='url'
-              name='avatar'
-              className='popup__input popup__input_type_image-link'
-              placeholder='Image Link'
-              required
-            />
-            <span className='popup__error avatar-input-error'></span>
           </PopupWithForm>
           <PopupWithForm
             name='delete'
