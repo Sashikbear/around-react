@@ -2,12 +2,12 @@ import Footer from "./Footer";
 import Header from "./Header";
 import Main from "./Main";
 import { useState, useEffect } from "react";
-import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import api from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
+import AddPlacePopup from "./AddPlacePopup";
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -16,10 +16,51 @@ function App() {
     useState(false);
   const [selectedCard, setSelectedCard] = useState(undefined);
   const [currentUser, setCurrentUser] = useState({
-    name: "user name",
-    about: "about user",
-    avatar: "user avatar",
+    name: "",
+    about: "",
+    avatar: "",
   });
+  const [cards, setCards] = useState([]);
+
+  function handleCardLike(card) {
+    const isLiked = card.likes.some((user) => user._id === currentUser._id);
+    api
+      .changeLikeCardStatus(card._id, isLiked)
+      .then((newCard) => {
+        setCards((state) =>
+          state.map((currentCard) =>
+            currentCard._id === card._id ? newCard : currentCard
+          )
+        );
+      })
+      .catch((err) => {
+        console.log(`Error: ${err}`);
+      });
+  }
+
+  function handleCardDelete(card) {
+    api
+      .deleteCard(card._id)
+      .then(() => {
+        setCards((state) =>
+          state.filter((currentCard) => currentCard._id !== card._id)
+        );
+      })
+      .catch((err) => {
+        console.log(`Error: ${err}`);
+      });
+  }
+
+  useEffect(() => {
+    api
+      .getInitialCards()
+      .then((cardsData) => {
+        setCards(cardsData);
+      })
+      .catch((err) => {
+        console.log(`Error: ${err}`);
+      });
+  }, []);
 
   useEffect(() => {
     api
@@ -76,6 +117,18 @@ function App() {
         console.log(`Error: ${err}`);
       });
   }
+  function handleAddPlaceSubmit(newCard) {
+    api
+      .createCard(newCard)
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(`Error: ${err}`);
+      });
+  }
   return (
     <div className='page'>
       <div className='wrapper'>
@@ -87,6 +140,9 @@ function App() {
             onEditAvatarClick={handleEditAvatarClick}
             onConfirmDeleteClick={handleConfirmDeleteClick}
             onCardClick={handleCardClick}
+            cards={cards}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
           />
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
@@ -98,40 +154,10 @@ function App() {
             onClose={closeAllPopups}
             onUpdateAvatar={handleUpdateAvatar}
           />
-          <PopupWithForm
-            name='add-card'
-            title='New Place'
-            submitButton='Create'
+          <AddPlacePopup
             isOpen={isAddPlacePopupOpen}
             onClose={closeAllPopups}
-          >
-            <input
-              id='title-input'
-              name='name'
-              className='popup__input popup__input_type_image-title'
-              type='text'
-              placeholder='Title'
-              minLength='1'
-              maxLength='30'
-              required
-            />
-            <span className='popup__error title-input-error'></span>
-            <input
-              id='url-input'
-              type='url'
-              name='url'
-              className='popup__input popup__input_type_image-link'
-              placeholder='Image Link'
-              required
-            />
-            <span className='popup__error url-input-error'></span>
-          </PopupWithForm>
-          <PopupWithForm
-            name='delete'
-            title='Are you sure?'
-            submitButton='Yes'
-            isOpen={isConfirmDeletePopupOpen}
-            onClose={closeAllPopups}
+            onAddPlaceSubmit={handleAddPlaceSubmit}
           />
           <ImagePopup card={selectedCard} onClose={closeAllPopups} />
           <Footer />{" "}

@@ -2,8 +2,8 @@ import { useState, useEffect, useContext } from "react";
 import PopupWithForm from "./PopupWithForm";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
-  const [name, setName] = useState("name");
-  const [description, setDescription] = useState("description");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   const currentUser = useContext(CurrentUserContext);
 
   useEffect(() => {
@@ -13,11 +13,9 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
 
   function handleNameChange(e) {
     setName(e.target.value);
-    console.log(name);
   }
   function handleDescriptionChange(e) {
     setDescription(e.target.value);
-    console.log(description);
   }
   function handleSubmit(e) {
     // Prevent the browser from navigating to the form address
@@ -46,7 +44,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         placeholder='Name'
         minLength='2'
         maxLength='40'
-        value={name}
+        value={name || ""}
         onChange={handleNameChange}
         required
       />
@@ -59,7 +57,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         placeholder='About me'
         minLength='2'
         maxLength='200'
-        value={description}
+        value={description || ""}
         onChange={handleDescriptionChange}
         required
       />
