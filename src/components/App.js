@@ -8,20 +8,22 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
+import ConfirmDeletePopup from "./ConfirmDeletePopup";
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isConfirmDeletePopupOpen, setIsConfirmDeletePopupOpen] =
     useState(false);
-  const [selectedCard, setSelectedCard] = useState(undefined);
+  const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({
     name: "",
     about: "",
     avatar: "",
   });
   const [cards, setCards] = useState([]);
-
+  const [selectedToDeleteCard, setSelectedToDeleteCard] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   function handleCardLike(card) {
     const isLiked = card.likes.some((user) => user._id === currentUser._id);
     api
@@ -39,12 +41,17 @@ function App() {
   }
 
   function handleCardDelete(card) {
+    setIsLoading(true);
     api
       .deleteCard(card._id)
       .then(() => {
+        closeAllPopups();
         setCards((state) =>
           state.filter((currentCard) => currentCard._id !== card._id)
         );
+      })
+      .finally(() => {
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(`Error: ${err}`);
@@ -81,9 +88,10 @@ function App() {
   function handleAddPlaceClick() {
     setIsAddPlacePopupOpen(true);
   }
-  function handleConfirmDeleteClick() {
+  const handleConfirmDeleteClick = (card) => {
     setIsConfirmDeletePopupOpen(true);
-  }
+    setSelectedToDeleteCard(card);
+  };
   function handleCardClick(card) {
     setSelectedCard(card);
   }
@@ -94,36 +102,49 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsConfirmDeletePopupOpen(false);
     setSelectedCard(undefined);
+    setSelectedToDeleteCard(undefined);
   }
   function handleUpdateUser(currentUser) {
+    setIsLoading(true);
     api
       .editProfile({ name: currentUser.name, about: currentUser.about })
       .then((userData) => {
         setCurrentUser(userData);
         closeAllPopups();
       })
+      .finally(() => {
+        setIsLoading(false);
+      })
       .catch((err) => {
         console.log(`Error: ${err}`);
       });
   }
   function handleUpdateAvatar(currentUser) {
+    setIsLoading(true);
     api
       .editAvatar({ avatar: currentUser.avatar })
       .then((userData) => {
         setCurrentUser(userData);
         closeAllPopups();
       })
+      .finally(() => {
+        setIsLoading(false);
+      })
       .catch((err) => {
         console.log(`Error: ${err}`);
       });
   }
   function handleAddPlaceSubmit(newCard) {
+    setIsLoading(true);
     api
       .createCard(newCard)
       .then((newCard) => {
         setCards([newCard, ...cards]);
 
         closeAllPopups();
+      })
+      .finally(() => {
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(`Error: ${err}`);
@@ -145,21 +166,31 @@ function App() {
             onCardDelete={handleCardDelete}
           />
           <EditProfilePopup
+            isLoading={isLoading}
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}
             onUpdateUser={handleUpdateUser}
-          />{" "}
+          />
           <EditAvatarPopup
+            isLoading={isLoading}
             isOpen={isEditAvatarPopupOpen}
             onClose={closeAllPopups}
             onUpdateAvatar={handleUpdateAvatar}
           />
           <AddPlacePopup
+            isLoading={isLoading}
             isOpen={isAddPlacePopupOpen}
             onClose={closeAllPopups}
             onAddPlaceSubmit={handleAddPlaceSubmit}
           />
           <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+          <ConfirmDeletePopup
+            isLoading={isLoading}
+            isOpen={isConfirmDeletePopupOpen}
+            onClose={closeAllPopups}
+            onCardDelete={handleCardDelete}
+            card={selectedToDeleteCard}
+          />
           <Footer />{" "}
         </CurrentUserContext.Provider>
       </div>

@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import PopupWithForm from "./PopupWithForm";
 
-function AddPlacePopup({ isOpen, onClose, onAddPlaceSubmit }) {
+function AddPlacePopup({ isOpen, onClose, onAddPlaceSubmit, isLoading }) {
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
 
   useEffect(() => {
     setTitle("");
     setLink("");
-  }, []);
+  }, [isOpen]);
 
   function handleTitleChange(e) {
     setTitle(e.target.value);
@@ -26,9 +26,11 @@ function AddPlacePopup({ isOpen, onClose, onAddPlaceSubmit }) {
       name='add-card'
       title='New Place'
       submitButton='Create'
+      loadingButton='Saving..'
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
+      isLoading={isLoading}
     >
       <input
         id='title-input'
