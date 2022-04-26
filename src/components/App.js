@@ -9,6 +9,8 @@ import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import ConfirmDeletePopup from "./ConfirmDeletePopup";
+import FormValidator from "../utils/FormValidator";
+import config from "../utils/config";
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -80,12 +82,15 @@ function App() {
       });
   }, []);
   function handleEditAvatarClick() {
+    formValidators["form-avatar"].resetValidation();
     setIsEditAvatarPopupOpen(true);
   }
   function handleEditProfileClick() {
+    formValidators["form-profile"].resetValidation();
     setIsEditProfilePopupOpen(true);
   }
   function handleAddPlaceClick() {
+    formValidators["form-add-card"].resetValidation();
     setIsAddPlacePopupOpen(true);
   }
   const handleConfirmDeleteClick = (card) => {
@@ -150,6 +155,20 @@ function App() {
         console.log(`Error: ${err}`);
       });
   }
+  const formValidators = {};
+
+  const enableValidation = (config) => {
+    const formList = Array.from(document.querySelectorAll(config.formSelector));
+    formList.forEach((formElement) => {
+      const validator = new FormValidator(config, formElement);
+      const formName = formElement.getAttribute("name");
+      formValidators[formName] = validator;
+      validator.enableValidation();
+    });
+  };
+
+  enableValidation(config);
+
   return (
     <div className='page'>
       <div className='wrapper'>
