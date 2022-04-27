@@ -102,11 +102,11 @@ function App() {
       isConfirmDeletePopupOpen ||
       selectedCard
     ) {
-      document.addEventListener("click", handleClickClose);
+      document.addEventListener("mousedown", handleClickClose);
       document.addEventListener("keydown", handleEscClose);
     }
     return () => {
-      document.removeEventListener("click", handleClickClose);
+      document.removeEventListener("mousedown", handleClickClose);
       document.removeEventListener("keydown", handleEscClose);
     };
   }, [
