@@ -81,6 +81,41 @@ function App() {
         console.log(`Error: ${err}`);
       });
   }, []);
+
+  useEffect(() => {
+    const handleClickClose = (e) => {
+      if (e.target.classList.contains("popup_opened")) {
+        closeAllPopups();
+      }
+    };
+
+    const handleEscClose = (e) => {
+      if (e.key === "Escape") {
+        closeAllPopups();
+      }
+    };
+
+    if (
+      isEditProfilePopupOpen ||
+      isEditAvatarPopupOpen ||
+      isAddPlacePopupOpen ||
+      isConfirmDeletePopupOpen ||
+      selectedCard
+    ) {
+      document.addEventListener("click", handleClickClose);
+      document.addEventListener("keydown", handleEscClose);
+    }
+    return () => {
+      document.removeEventListener("click", handleClickClose);
+      document.removeEventListener("keydown", handleEscClose);
+    };
+  }, [
+    isEditProfilePopupOpen,
+    isEditAvatarPopupOpen,
+    isAddPlacePopupOpen,
+    isConfirmDeletePopupOpen,
+    selectedCard,
+  ]);
   function handleEditAvatarClick() {
     formValidators["form-avatar"].resetValidation();
     setIsEditAvatarPopupOpen(true);
@@ -106,8 +141,8 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsConfirmDeletePopupOpen(false);
-    setSelectedCard(undefined);
-    setSelectedToDeleteCard(undefined);
+    setSelectedCard(null);
+    setSelectedToDeleteCard(null);
   }
   function handleUpdateUser(currentUser) {
     setIsLoading(true);
